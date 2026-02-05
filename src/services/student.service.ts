@@ -29,5 +29,14 @@ export const StudentService = {
     create: async (data: StudentFormData): Promise<Student> => {
         const res = await axios.post("/api/students", data);
         return res.data;
+    },
+
+    update: async (id: number, data: StudentFormData): Promise<Student> => {
+        const res = await axios.put(`/api/students/${id}`, data);
+        return res.data;
+    },
+
+    delete: async (id: number): Promise<void> => {
+        await axios.delete(`/api/students/${id}`);
     }
 };

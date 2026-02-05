@@ -4,21 +4,25 @@ import { studentSchema, StudentFormData } from "@/lib/validators";
 
 interface Props {
     onSubmit: (data: StudentFormData) => Promise<void>;
+    defaultValues?: Partial<StudentFormData>;
 }
 
-export default function StudentForm({ onSubmit }: Props) {
+export default function StudentForm({ onSubmit, defaultValues }: Props) {
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors, isSubmitting }
     } = useForm<StudentFormData>({
-        resolver: zodResolver(studentSchema)
+        resolver: zodResolver(studentSchema),
+        defaultValues
     });
 
     const handleFormSubmit = async (data: StudentFormData) => {
         await onSubmit(data);
-        reset(); // Clear form after successful submission
+        if (!defaultValues) {
+            reset(); // Only clear form after create, not edit
+        }
     };
 
     return (
@@ -98,7 +102,9 @@ export default function StudentForm({ onSubmit }: Props) {
                 disabled={isSubmitting}
                 className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-                {isSubmitting ? "Creating..." : "Create Student"}
+                {isSubmitting
+                    ? (defaultValues ? "Saving..." : "Creating...")
+                    : (defaultValues ? "Save Changes" : "Create Student")}
             </button>
         </form>
     );
