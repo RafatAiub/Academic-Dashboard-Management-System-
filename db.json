@@ -84,5 +84,55 @@
             "course": "Business",
             "gpa": 3.6
         }
+    ],
+    "courses": [
+        {
+            "id": 1,
+            "code": "CS101",
+            "name": "Introduction to Computer Science",
+            "credits": 3,
+            "department": "Computer Science",
+            "instructor": "Dr. Smith"
+        },
+        {
+            "id": 2,
+            "code": "MATH201",
+            "name": "Calculus II",
+            "credits": 4,
+            "department": "Mathematics",
+            "instructor": "Dr. Johnson"
+        },
+        {
+            "id": 3,
+            "code": "PHYS101",
+            "name": "General Physics",
+            "credits": 4,
+            "department": "Physics",
+            "instructor": "Dr. Brown"
+        },
+        {
+            "id": 4,
+            "code": "ENG202",
+            "name": "Engineering Mechanics",
+            "credits": 3,
+            "department": "Engineering",
+            "instructor": "Dr. Wilson"
+        },
+        {
+            "id": 5,
+            "code": "BUS101",
+            "name": "Business Fundamentals",
+            "credits": 3,
+            "department": "Business",
+            "instructor": "Dr. Davis"
+        },
+        {
+            "id": 6,
+            "code": "CHEM101",
+            "name": "General Chemistry",
+            "credits": 4,
+            "department": "Chemistry",
+            "instructor": "Dr. Lee"
+        }
     ]
 }
