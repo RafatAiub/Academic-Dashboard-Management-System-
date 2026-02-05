@@ -20,6 +20,69 @@
             "year": 2023,
             "course": "Physics",
             "gpa": 3.9
+        },
+        {
+            "id": 4,
+            "name": "Diana Prince",
+            "year": 2024,
+            "course": "Engineering",
+            "gpa": 3.7
+        },
+        {
+            "id": 5,
+            "name": "Ethan Hunt",
+            "year": 2022,
+            "course": "Business",
+            "gpa": 3.6
+        },
+        {
+            "id": 6,
+            "name": "Fiona Green",
+            "year": 2023,
+            "course": "Chemistry",
+            "gpa": 3.9
+        },
+        {
+            "id": 7,
+            "name": "George Wilson",
+            "year": 2024,
+            "course": "Biology",
+            "gpa": 3.4
+        },
+        {
+            "id": 8,
+            "name": "Hannah Lee",
+            "year": 2022,
+            "course": "Computer Science",
+            "gpa": 3.8
+        },
+        {
+            "id": 9,
+            "name": "Ian Cooper",
+            "year": 2023,
+            "course": "Mathematics",
+            "gpa": 3.7
+        },
+        {
+            "id": 10,
+            "name": "Julia Martinez",
+            "year": 2024,
+            "course": "Physics",
+            "gpa": 4.0
+        },
+        {
+            "id": 11,
+            "name": "Kevin Zhang",
+            "year": 2022,
+            "course": "Engineering",
+            "gpa": 3.5
+        },
+        {
+            "id": 12,
+            "name": "Laura Davis",
+            "year": 2023,
+            "course": "Business",
+            "gpa": 3.6
         }
     ]
 }
