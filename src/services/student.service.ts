@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Student } from "@/types/student";
+import { StudentFormData } from "@/lib/validators";
 
 export interface StudentListResponse {
     data: Student[];
@@ -17,6 +18,11 @@ export const StudentService = {
         search?: string;
     }): Promise<StudentListResponse> => {
         const res = await axios.get("/api/students", { params });
+        return res.data;
+    },
+
+    create: async (data: StudentFormData): Promise<Student> => {
+        const res = await axios.post("/api/students", data);
         return res.data;
     }
 };

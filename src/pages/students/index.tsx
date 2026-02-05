@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import StudentTable from "@/components/tables/StudentTable";
+import StudentForm from "@/components/forms/StudentForm";
 import { Student } from "@/types/student";
 import { StudentService } from "@/services/student.service";
+import { StudentFormData } from "@/lib/validators";
 
 export default function StudentsPage() {
     const [students, setStudents] = useState<Student[]>([]);
@@ -33,6 +35,12 @@ export default function StudentsPage() {
         }
     }
 
+    async function handleCreateStudent(data: StudentFormData) {
+        await StudentService.create(data);
+        setPage(1);
+        fetchStudents();
+    }
+
     const totalPages = Math.ceil(total / limit);
 
     return (
@@ -42,8 +50,11 @@ export default function StudentsPage() {
                 <p className="text-gray-600 mt-1">Manage and view all students</p>
             </div>
 
+            {/* Student Form */}
+            <StudentForm onSubmit={handleCreateStudent} />
+
             {/* Search */}
-            <div className="mb-4">
+            <div className="mb-4 mt-8">
                 <input
                     type="text"
                     placeholder="Search by name..."
