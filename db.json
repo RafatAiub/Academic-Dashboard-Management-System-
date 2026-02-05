@@ -1,0 +1,25 @@
+{
+    "students": [
+        {
+            "id": 1,
+            "name": "Alice Johnson",
+            "year": 2023,
+            "course": "Computer Science",
+            "gpa": 3.8
+        },
+        {
+            "id": 2,
+            "name": "Bob Smith",
+            "year": 2022,
+            "course": "Mathematics",
+            "gpa": 3.5
+        },
+        {
+            "id": 3,
+            "name": "Charlie Brown",
+            "year": 2023,
+            "course": "Physics",
+            "gpa": 3.9
+        }
+    ]
+}
