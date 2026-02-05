@@ -1,21 +1,34 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getDB } from "@/lib/mock-db";
+import { createStudentSchema } from "@/lib/validators";
 import { Student } from "@/types/student";
 
 export default function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method !== "GET") {
-        return res.status(405).end();
-    }
+    const db = getDB();
 
+    switch (req.method) {
+        case "GET":
+            return getStudents(req, res, db);
+        case "POST":
+            return createStudent(req, res, db);
+        default:
+            return res.status(405).end();
+    }
+}
+
+function getStudents(
+    req: NextApiRequest,
+    res: NextApiResponse,
+    db: ReturnType<typeof getDB>
+) {
     const { page = "1", limit = "10", search = "" } = req.query;
 
     const pageNum = Number(page);
     const limitNum = Number(limit);
 
-    const db = getDB();
     let students: Student[] = db.students;
 
     // 🔍 search
@@ -40,4 +53,28 @@ export default function handler(
             limit: limitNum
         }
     });
+}
+
+function createStudent(
+    req: NextApiRequest,
+    res: NextApiResponse,
+    db: ReturnType<typeof getDB>
+) {
+    const parsed = createStudentSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+        return res.status(400).json({
+            message: "Invalid payload",
+            errors: parsed.error.flatten().fieldErrors
+        });
+    }
+
+    const newStudent: Student = {
+        id: Date.now(),
+        ...parsed.data
+    };
+
+    db.students.push(newStudent);
+
+    return res.status(201).json(newStudent);
 }
