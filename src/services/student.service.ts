@@ -21,6 +21,11 @@ export const StudentService = {
         return res.data;
     },
 
+    getById: async (id: number): Promise<Student> => {
+        const res = await axios.get(`/api/students/${id}`);
+        return res.data;
+    },
+
     create: async (data: StudentFormData): Promise<Student> => {
         const res = await axios.post("/api/students", data);
         return res.data;
