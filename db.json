@@ -134,5 +134,55 @@
             "department": "Chemistry",
             "instructor": "Dr. Lee"
         }
+    ],
+    "faculty": [
+        {
+            "id": 1,
+            "name": "Dr. Sarah Smith",
+            "email": "sarah.smith@university.edu",
+            "department": "Computer Science",
+            "specialization": "Data Structures & Algorithms",
+            "phone": "+1-555-0101"
+        },
+        {
+            "id": 2,
+            "name": "Prof. Michael Johnson",
+            "email": "m.johnson@university.edu",
+            "department": "Mathematics",
+            "specialization": "Calculus & Linear Algebra",
+            "phone": "+1-555-0102"
+        },
+        {
+            "id": 3,
+            "name": "Dr. Emily Brown",
+            "email": "e.brown@university.edu",
+            "department": "Physics",
+            "specialization": "Quantum Mechanics",
+            "phone": "+1-555-0103"
+        },
+        {
+            "id": 4,
+            "name": "Prof. David Wilson",
+            "email": "d.wilson@university.edu",
+            "department": "Engineering",
+            "specialization": "Mechanical Systems",
+            "phone": "+1-555-0104"
+        },
+        {
+            "id": 5,
+            "name": "Dr. Jennifer Davis",
+            "email": "j.davis@university.edu",
+            "department": "Business",
+            "specialization": "Marketing & Strategy",
+            "phone": "+1-555-0105"
+        },
+        {
+            "id": 6,
+            "name": "Prof. Robert Lee",
+            "email": "r.lee@university.edu",
+            "department": "Chemistry",
+            "specialization": "Organic Chemistry",
+            "phone": "+1-555-0106"
+        }
     ]
 }

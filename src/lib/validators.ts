@@ -23,3 +23,14 @@ export const courseSchema = z.object({
 });
 
 export type CourseFormData = z.infer<typeof courseSchema>;
+
+// Faculty Schema
+export const facultySchema = z.object({
+    name: z.string().min(3, "Name must be at least 3 characters"),
+    email: z.string().email("Invalid email address"),
+    department: z.string().min(2, "Department must be at least 2 characters"),
+    specialization: z.string().min(2, "Specialization must be at least 2 characters"),
+    phone: z.string().optional()
+});
+
+export type FacultyFormData = z.infer<typeof facultySchema>;
