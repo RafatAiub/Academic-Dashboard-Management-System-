@@ -1,3 +1,8 @@
 export default function FacultyPage() {
-    return <div className="p-6">Faculty Page</div>;
+    return (
+        <div className="p-6">
+            <h1 className="text-2xl font-semibold text-gray-800">Faculty</h1>
+            <p className="mt-2 text-gray-600">Faculty management coming soon...</p>
+        </div>
+    );
 }
