@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { StudentService } from "@/services/student.service";
 import { CourseService } from "@/services/course.service";
+import { FacultyService } from "@/services/faculty.service";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
     totalStudents: 0,
     totalCourses: 0,
+    totalFaculty: 0,
     averageGPA: 0,
     loading: true
   });
@@ -17,9 +19,10 @@ export default function DashboardPage() {
 
   async function fetchStats() {
     try {
-      const [studentsRes, coursesRes] = await Promise.all([
+      const [studentsRes, coursesRes, facultyRes] = await Promise.all([
         StudentService.list({ page: 1, limit: 1000 }),
-        CourseService.list({ page: 1, limit: 1000 })
+        CourseService.list({ page: 1, limit: 1000 }),
+        FacultyService.list({ page: 1, limit: 1000 })
       ]);
 
       const students = studentsRes.data;
@@ -30,6 +33,7 @@ export default function DashboardPage() {
       setStats({
         totalStudents: studentsRes.meta.total,
         totalCourses: coursesRes.meta.total,
+        totalFaculty: facultyRes.meta.total,
         averageGPA: avgGPA,
         loading: false
       });
@@ -47,7 +51,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {/* Total Students */}
         <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
           <div className="flex items-center justify-between">
@@ -88,6 +92,26 @@ export default function DashboardPage() {
           </Link>
         </div>
 
+        {/* Total Faculty */}
+        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-orange-100 text-sm font-medium">Total Faculty</p>
+              <p className="text-3xl font-bold mt-2">
+                {stats.loading ? "..." : stats.totalFaculty}
+              </p>
+            </div>
+            <div className="bg-orange-400 bg-opacity-30 rounded-full p-3">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+          </div>
+          <Link href="/faculty" className="mt-4 inline-block text-sm text-orange-100 hover:text-white">
+            View all faculty →
+          </Link>
+        </div>
+
         {/* Average GPA */}
         <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
           <div className="flex items-center justify-between">
@@ -112,7 +136,7 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link
             href="/students"
             className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
@@ -140,6 +164,21 @@ export default function DashboardPage() {
             <div>
               <h3 className="font-semibold text-gray-800">Manage Courses</h3>
               <p className="text-sm text-gray-600">Add, edit, or view courses</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/faculty"
+            className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors"
+          >
+            <div className="bg-orange-100 rounded-lg p-3 mr-4">
+              <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800">Manage Faculty</h3>
+              <p className="text-sm text-gray-600">Add, edit, or view faculty</p>
             </div>
           </Link>
         </div>
