@@ -11,10 +11,16 @@ interface DB {
     enrollments: Enrollment[];
 }
 
-// clone once at server start
-let db: DB = structuredClone(rawData) as unknown as DB;
+declare global {
+    var __db: DB | undefined;
+}
+
+// Ensure the mock-db is a singleton across reloads in dev
+if (!global.__db) {
+    global.__db = structuredClone(rawData) as unknown as DB;
+}
 
 export function getDB() {
-    return db;
+    return global.__db!;
 }
 

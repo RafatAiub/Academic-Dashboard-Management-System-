@@ -1,3 +1,4 @@
+import { getDB } from "@/lib/mock-db";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -6,6 +7,9 @@ import { FacultyService } from "@/services/faculty.service";
 import { FacultyFormData } from "@/lib/validators";
 import FacultyForm from "@/components/forms/FacultyForm";
 import DeleteConfirmModal from "@/components/modals/DeleteConfirmModal";
+import DetailLayout from "@/components/layout/DetailLayout";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { UserCheck, Mail, Phone, MapPin, Briefcase, Award, Trash2, Edit3, ShieldCheck, User } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -21,29 +25,22 @@ export default function FacultyDetailPage({ faculty, error }: Props) {
 
     if (error || !faculty) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-red-50 p-6">
-                <div className="max-w-2xl mx-auto mt-20">
-                    <div className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-300 rounded-2xl p-8 text-center shadow-xl">
-                        <div className="flex justify-center mb-4">
-                            <div className="p-4 bg-red-200 rounded-full">
-                                <svg className="w-16 h-16 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <h1 className="text-3xl font-bold text-red-800 mb-3">Faculty Member Not Found</h1>
-                        <p className="text-red-600 mb-6 text-lg">{error || "The faculty member you're looking for doesn't exist."}</p>
-                        <Link
-                            href="/faculty"
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            Back to Faculty
-                        </Link>
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+                <Card className="max-w-md w-full text-center p-8 space-y-6">
+                    <div className="w-20 h-20 bg-rose-50 rounded-3xl flex items-center justify-center mx-auto text-rose-600">
+                        <UserCheck className="w-10 h-10" />
                     </div>
-                </div>
+                    <div>
+                        <h1 className="text-2xl font-black text-slate-900 tracking-tight">Faculty Not Found</h1>
+                        <p className="text-slate-500 font-medium mt-2">{error || "The personnel record you are looking for does not exist."}</p>
+                    </div>
+                    <Link
+                        href="/faculty"
+                        className="block w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10"
+                    >
+                        Return to Personnel
+                    </Link>
+                </Card>
             </div>
         );
     }
@@ -65,175 +62,207 @@ export default function FacultyDetailPage({ faculty, error }: Props) {
         }
     };
 
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50 p-6">
-            <div className="max-w-5xl mx-auto">
-                {/* Header */}
-                <div className="mb-8">
-                    <Link
-                        href="/faculty"
-                        className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 mb-6 font-medium hover:gap-3 transition-all duration-200"
-                    >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Back to Faculty
-                    </Link>
+    const actions = (
+        <>
+            <button
+                onClick={() => setIsEditing(true)}
+                className="bg-white/10 text-white px-5 py-2.5 rounded-xl hover:bg-white/20 transition-all font-bold text-sm backdrop-blur-md border border-white/20 flex items-center gap-2"
+            >
+                <Edit3 className="w-4 h-4" />
+                Edit Profile
+            </button>
+            <button
+                onClick={() => setShowDeleteModal(true)}
+                className="bg-rose-500 text-white px-5 py-2.5 rounded-xl hover:bg-rose-600 transition-all font-bold text-sm shadow-xl shadow-rose-500/20 flex items-center gap-2"
+            >
+                <Trash2 className="w-4 h-4" />
+                Terminate
+            </button>
+        </>
+    );
 
-                    <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full filter blur-3xl opacity-10"></div>
-                        <div className="relative z-10 flex items-center gap-4">
-                            <div className="p-4 bg-white bg-opacity-20 rounded-2xl backdrop-blur-sm">
-                                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
+    return (
+        <DetailLayout
+            title={faculty.name}
+            subtitle={`${faculty.department} Department — Principal Consultant`}
+            badge="Faculty Member"
+            icon={UserCheck}
+            backHref="/faculty"
+            backLabel="Faculty Directory"
+            actions={!isEditing ? actions : null}
+        >
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Left Side: Professional Info */}
+                <div className="lg:col-span-8 space-y-8">
+                    {/* Status Brief */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-6 group hover:shadow-xl hover:shadow-emerald-500/5 transition-all">
+                            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <Briefcase className="w-7 h-7" />
                             </div>
                             <div>
-                                <h1 className="text-4xl font-bold text-white">{faculty.name}</h1>
-                                <p className="text-indigo-100 mt-2">Faculty ID: {faculty.id}</p>
+                                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Department</p>
+                                <p className="text-xl font-black text-slate-900 mt-0.5">{faculty.department}</p>
+                            </div>
+                        </div>
+                        <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-6 group hover:shadow-xl hover:shadow-emerald-500/5 transition-all">
+                            <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <Award className="w-7 h-7" />
+                            </div>
+                            <div>
+                                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Specialization</p>
+                                <p className="text-xl font-black text-slate-900 mt-0.5 truncate max-w-[200px]">{faculty.specialization}</p>
                             </div>
                         </div>
                     </div>
+
+                    {isEditing ? (
+                        <Card className="rounded-[2rem]">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-3">
+                                    <Edit3 className="w-5 h-5 text-emerald-600" />
+                                    Modify Faculty Profile
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <FacultyForm
+                                    onSubmit={handleUpdate}
+                                    defaultValues={faculty}
+                                />
+                                <button
+                                    onClick={() => setIsEditing(false)}
+                                    className="mt-6 text-slate-400 hover:text-slate-600 font-bold text-sm uppercase tracking-widest flex items-center gap-2"
+                                >
+                                    Cancel Changes
+                                </button>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <div className="space-y-8">
+                            <Card className="rounded-[2rem] overflow-hidden">
+                                <CardHeader className="bg-slate-50/50 flex flex-row items-center justify-between py-6">
+                                    <div className="flex items-center gap-3">
+                                        <Mail className="w-6 h-6 text-emerald-600" />
+                                        <div className="space-y-0.5">
+                                            <CardTitle>Communication Portal</CardTitle>
+                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Official Contact Methods</p>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8 py-8">
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400">
+                                            <Mail className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Electronic Mail</p>
+                                            <a href={`mailto:${faculty.email}`} className="text-lg font-bold text-slate-900 hover:text-emerald-600 transition-colors">
+                                                {faculty.email}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400">
+                                            <Phone className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Direct Line</p>
+                                            <p className="text-lg font-bold text-slate-900">{faculty.phone}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4 md:col-span-2">
+                                        <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400">
+                                            <MapPin className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Office Location</p>
+                                            <p className="text-lg font-bold text-slate-900">Academic Wing B, Level 4, Suite 402</p>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <div className="bg-emerald-900/5 border border-emerald-100 rounded-[2.5rem] p-8 flex items-center gap-8">
+                                <div className="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-600/20 text-white">
+                                    <ShieldCheck className="w-8 h-8" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-black text-slate-900 tracking-tight">Verified Educator</h3>
+                                    <p className="text-slate-500 font-medium mt-1 leading-relaxed">
+                                        This faculty member has cleared all institutional credentials and is authorized for academic consultation and curriculum management.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                {isEditing ? (
-                    <div className="space-y-4">
-                        <FacultyForm
-                            onSubmit={handleUpdate}
-                            defaultValues={faculty}
-                        />
-                        <button
-                            onClick={() => setIsEditing(false)}
-                            className="text-gray-600 hover:text-gray-800 font-medium flex items-center gap-2 transition-colors"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            Cancel Editing
-                        </button>
-                    </div>
-                ) : (
-                    <>
-                        {/* Faculty Details Card */}
-                        <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-xl p-8 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-full filter blur-3xl opacity-50 -z-10"></div>
-
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <h2 className="text-2xl font-bold text-gray-800">Faculty Information</h2>
+                {/* Right Side: Identity Panel */}
+                <div className="lg:col-span-4 space-y-8">
+                    <Card className="rounded-[2.5rem] bg-white border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 to-emerald-700" />
+                        <CardHeader className="pt-10 flex flex-col items-center">
+                            <div className="w-24 h-24 bg-slate-100 rounded-3xl flex items-center justify-center text-slate-300 mb-6 border-4 border-white shadow-lg overflow-hidden relative group">
+                                <User className="w-12 h-12 group-hover:scale-110 transition-transform" />
                             </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                                        <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                        Full Name
-                                    </label>
-                                    <p className="text-2xl font-bold text-gray-800">{faculty.name}</p>
+                            <CardTitle className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Personnel File</CardTitle>
+                            <div className="text-2xl font-black text-slate-900 tracking-tight text-center">Identity Overview</div>
+                        </CardHeader>
+                        <CardContent className="space-y-8 pb-10">
+                            <div className="space-y-6">
+                                <div className="space-y-1">
+                                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Faculty ID</p>
+                                    <p className="font-black text-slate-900 text-xl tracking-tight">#F-{faculty.id.toString().padStart(4, '0')}</p>
                                 </div>
-
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                                        <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                        </svg>
-                                        Email Address
-                                    </label>
-                                    <a
-                                        href={`mailto:${faculty.email}`}
-                                        className="text-xl text-indigo-600 hover:text-indigo-800 hover:underline transition-colors font-medium"
-                                    >
-                                        {faculty.email}
-                                    </a>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                                        <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                        </svg>
-                                        Department
-                                    </label>
-                                    <p className="text-xl font-semibold text-gray-800">{faculty.department}</p>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                                        <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                                        </svg>
-                                        Specialization
-                                    </label>
-                                    <p className="text-xl font-semibold text-gray-800">{faculty.specialization}</p>
-                                </div>
-
-                                {faculty.phone && (
-                                    <div className="md:col-span-2 space-y-2">
-                                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                                            <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                            </svg>
-                                            Phone Number
-                                        </label>
-                                        <p className="text-xl font-semibold text-gray-800">{faculty.phone}</p>
+                                <div className="space-y-1">
+                                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Employment Status</p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                                        <p className="font-bold text-slate-900 text-lg tracking-tight">Active Duty</p>
                                     </div>
-                                )}
+                                </div>
+                                <div className="h-px bg-slate-100" />
+                                <div className="space-y-3">
+                                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Departmental Influence</p>
+                                    <div className="flex items-center gap-4">
+                                        <div className="text-4xl font-black text-slate-900">Tier 1</div>
+                                        <div className="px-4 py-1.5 rounded-xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest">High Seniority</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </CardContent>
+                    </Card>
 
-                        {/* Actions */}
-                        <div className="mt-8 flex gap-4">
-                            <button
-                                onClick={() => setIsEditing(true)}
-                                className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                                Edit Faculty
-                            </button>
-                            <button
-                                onClick={() => setShowDeleteModal(true)}
-                                className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 text-white px-8 py-4 rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                                Delete Faculty
-                            </button>
-                        </div>
-                    </>
-                )}
-
-                {/* Delete Confirmation Modal */}
-                <DeleteConfirmModal
-                    isOpen={showDeleteModal}
-                    onClose={() => setShowDeleteModal(false)}
-                    onConfirm={handleDelete}
-                    title="Delete Faculty Member"
-                    message={`Are you sure you want to delete ${faculty.name}? This action cannot be undone.`}
-                    isDeleting={isDeleting}
-                />
+                    <div className="bg-slate-900 p-8 rounded-[2.5rem] text-white relative overflow-hidden group">
+                        <UserCheck className="absolute -right-8 -bottom-8 w-40 h-40 opacity-5 group-hover:scale-110 transition-transform duration-700" />
+                        <h3 className="text-xl font-black tracking-tight mb-4">Official Bio</h3>
+                        <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                            Principal consultant and academic lead for the {faculty.department} department. Specializing in {faculty.specialization} with over a decade of administrative excellence.
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <DeleteConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleDelete}
+                title="Service Termination"
+                message={`Are you sure you want to terminate ${faculty.name}'s active service record? This protocol will archive all associated professional metadata.`}
+                isLoading={isDeleting}
+            />
+        </DetailLayout>
     );
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
     const { id } = context.params!;
+    const db = getDB();
+    const facultyId = Number(id);
 
-    try {
-        const faculty = await FacultyService.getById(Number(id));
-        return {
-            props: { faculty }
-        };
-    } catch (error) {
+    const faculty = db.faculty.find(f => f.id === facultyId);
+
+    if (!faculty) {
         return {
             props: {
                 faculty: null,
@@ -241,4 +270,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
             }
         };
     }
+
+    return {
+        props: { faculty }
+    };
 };
+
+
