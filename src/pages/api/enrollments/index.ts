@@ -48,6 +48,7 @@ function listEnrollments(
     // Populate student and course names
     const enriched: EnrollmentWithDetails[] = paginatedData.map(enrollment => ({
         ...enrollment,
+        status: enrollment.status as 'enrolled' | 'completed' | 'dropped',
         studentName: db.students.find(s => s.id === enrollment.studentId)?.name,
         courseName: db.courses.find(c => c.id === enrollment.courseId)?.name,
         courseCode: db.courses.find(c => c.id === enrollment.courseId)?.code

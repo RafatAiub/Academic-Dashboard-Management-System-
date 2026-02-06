@@ -24,7 +24,7 @@ function getCourses(
     res: NextApiResponse,
     db: ReturnType<typeof getDB>
 ) {
-    const { page = "1", limit = "10", search = "" } = req.query;
+    const { page = "1", limit = "10", search = "", department, credits } = req.query;
 
     const pageNum = Number(page);
     const limitNum = Number(limit);
@@ -37,6 +37,16 @@ function getCourses(
             c.code.toLowerCase().includes(String(search).toLowerCase()) ||
             c.name.toLowerCase().includes(String(search).toLowerCase())
         );
+    }
+
+    // 🏢 filter by department
+    if (department) {
+        courses = courses.filter((c) => c.department === String(department));
+    }
+
+    // 🏆 filter by credits
+    if (credits) {
+        courses = courses.filter((c) => c.credits === Number(credits));
     }
 
     const total = courses.length;
@@ -70,7 +80,11 @@ function createCourse(
 
     const newCourse: Course = {
         id: Date.now(),
-        ...parsed.data
+        code: parsed.data.code,
+        name: parsed.data.name,
+        credits: parsed.data.credits,
+        department: parsed.data.department,
+        ...(parsed.data.instructor && { instructor: parsed.data.instructor })
     };
 
     db.courses.push(newCourse);

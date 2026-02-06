@@ -16,6 +16,7 @@ export const FacultyService = {
         page: number;
         limit: number;
         search?: string;
+        department?: string;
     }): Promise<FacultyListResponse> => {
         const res = await axios.get("/api/faculty", { params });
         return res.data;

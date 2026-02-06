@@ -24,7 +24,7 @@ function getStudents(
     res: NextApiResponse,
     db: ReturnType<typeof getDB>
 ) {
-    const { page = "1", limit = "10", search = "" } = req.query;
+    const { page = "1", limit = "10", search = "", year, course } = req.query;
 
     const pageNum = Number(page);
     const limitNum = Number(limit);
@@ -36,6 +36,16 @@ function getStudents(
         students = students.filter((s) =>
             s.name.toLowerCase().includes(String(search).toLowerCase())
         );
+    }
+
+    // 📅 filter by year
+    if (year) {
+        students = students.filter((s) => s.year === Number(year));
+    }
+
+    // 📚 filter by course (department-like)
+    if (course) {
+        students = students.filter((s) => s.course === String(course));
     }
 
     const total = students.length;

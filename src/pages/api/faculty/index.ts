@@ -24,7 +24,7 @@ function getFaculty(
     res: NextApiResponse,
     db: ReturnType<typeof getDB>
 ) {
-    const { page = "1", limit = "10", search = "" } = req.query;
+    const { page = "1", limit = "10", search = "", department } = req.query;
 
     const pageNum = Number(page);
     const limitNum = Number(limit);
@@ -38,6 +38,11 @@ function getFaculty(
             f.email.toLowerCase().includes(String(search).toLowerCase()) ||
             f.department.toLowerCase().includes(String(search).toLowerCase())
         );
+    }
+
+    // 🏢 filter by department
+    if (department) {
+        faculty = faculty.filter((f) => f.department === String(department));
     }
 
     const total = faculty.length;
