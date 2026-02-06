@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getDB } from "@/lib/mock-db";
 import { facultySchema } from "@/lib/validators";
+import { Faculty } from "@/types/faculty";
 
 export default function handler(
     req: NextApiRequest,
@@ -53,9 +54,13 @@ function updateFaculty(
         });
     }
 
-    const updatedFaculty = {
+    const updatedFaculty: Faculty = {
         id,
-        ...parsed.data
+        name: parsed.data.name,
+        email: parsed.data.email,
+        department: parsed.data.department,
+        specialization: parsed.data.specialization,
+        ...(parsed.data.phone && { phone: parsed.data.phone })
     };
 
     db.faculty[index] = updatedFaculty;

@@ -30,7 +30,6 @@ export default function CourseEnrollmentChart({ courses }: Props) {
             },
             animations: {
                 enabled: true,
-                easing: 'easeinout',
                 speed: 800
             }
         },

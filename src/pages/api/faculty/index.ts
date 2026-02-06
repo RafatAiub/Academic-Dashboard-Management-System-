@@ -71,7 +71,11 @@ function createFaculty(
 
     const newFaculty: Faculty = {
         id: Date.now(),
-        ...parsed.data
+        name: parsed.data.name,
+        email: parsed.data.email,
+        department: parsed.data.department,
+        specialization: parsed.data.specialization,
+        ...(parsed.data.phone && { phone: parsed.data.phone })
     };
 
     db.faculty.push(newFaculty);

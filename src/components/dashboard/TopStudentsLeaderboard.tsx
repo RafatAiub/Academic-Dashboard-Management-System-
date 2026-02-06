@@ -28,7 +28,6 @@ export default function TopStudentsLeaderboard({ students }: Props) {
             },
             animations: {
                 enabled: true,
-                easing: 'easeinout',
                 speed: 800,
                 animateGradually: {
                     enabled: true,
