@@ -70,7 +70,7 @@ export default function TopStudentsLeaderboard({ students }: Props) {
                 colors: ['#fff']
             },
             formatter: function (val: any) {
-                return val.toFixed(2);
+                return Number(val).toFixed(2);
             }
         },
         xaxis: {
@@ -99,7 +99,7 @@ export default function TopStudentsLeaderboard({ students }: Props) {
             theme: 'dark',
             y: {
                 formatter: function (val: any) {
-                    return "GPA: " + val.toFixed(2);
+                    return "GPA: " + Number(val).toFixed(2);
                 }
             },
             style: {
