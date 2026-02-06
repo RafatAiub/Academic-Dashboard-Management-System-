@@ -15,12 +15,37 @@ export default function CourseEnrollmentChart({ courses }: Props) {
         setMounted(true);
     }, []);
 
-    // Simulate enrollment data (in real app, this would come from enrollments)
-    const enrollmentData = courses.map(course => ({
-        name: course.code,
-        fullName: course.name,
-        enrollments: Math.floor(Math.random() * 50) + 10 // Random for demo
-    }));
+    const [enrollmentData, setEnrollmentData] = useState<{ name: string; fullName: string; enrollments: number }[]>([]);
+
+    useEffect(() => {
+        if (courses.length > 0) {
+            fetchEnrollmentCounts();
+        }
+    }, [courses]);
+
+    async function fetchEnrollmentCounts() {
+        const _import_EnrollmentService = (await import("@/services/enrollment.service")).EnrollmentService;
+
+        try {
+            const promises = courses.map(async (course) => {
+                // Get real enrollments for this course
+                const enrollments = await _import_EnrollmentService.getByCourse(course.id);
+                // Filter only 'enrolled' or 'completed' status to count as active students
+                const activeCount = enrollments.filter(e => e.status === 'enrolled' || e.status === 'completed').length;
+
+                return {
+                    name: course.code,
+                    fullName: course.name,
+                    enrollments: activeCount
+                };
+            });
+
+            const results = await Promise.all(promises);
+            setEnrollmentData(results);
+        } catch (error) {
+            console.error("Failed to fetch real enrollment counts:", error);
+        }
+    }
 
     const chartOptions: ApexCharts.ApexOptions = {
         chart: {
