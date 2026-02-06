@@ -104,6 +104,16 @@ npm run build
 npm start
 ```
 
+### ☁️ Deploy to Render (Recommended)
+
+Since this project uses an **In-Memory Mock Database**, deploying to [Render](https://render.com) is recommended over Vercel/Netlify for better data persistence. Render keeps the server alive (unlike serverless functions), so your data won't reset as frequently.
+
+1.  **Sign up for Render** and connect your GitHub account.
+2.  Click **New +** -> **Blueprint**.
+3.  Connect this repository.
+4.  Render will automatically detect the `render.yaml` file and configure the service for you.
+5.  Click **Apply** to deploy.
+
 ## 🤝 Acknowledgments
 Crafted with passion by **Tanvir Mahtab Rafat**. This project serves as a showcase of modern web architecture, clean code principles, and premium UI/UX design.
 
