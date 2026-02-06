@@ -34,3 +34,16 @@ export const facultySchema = z.object({
 });
 
 export type FacultyFormData = z.infer<typeof facultySchema>;
+
+// Enrollment Schema
+export const enrollmentSchema = z.object({
+    studentId: z.number().int().positive("Student ID must be a positive integer"),
+    courseId: z.number().int().positive("Course ID must be a positive integer"),
+    grade: z.string().optional(),
+    semester: z.string().min(1, "Semester is required"),
+    year: z.number().int().min(2020).max(2030),
+    status: z.enum(['enrolled', 'completed', 'dropped']),
+    enrolledDate: z.string()
+});
+
+export type EnrollmentFormData = z.infer<typeof enrollmentSchema>;

@@ -184,5 +184,105 @@
             "specialization": "Organic Chemistry",
             "phone": "+1-555-0106"
         }
+    ],
+    "enrollments": [
+        {
+            "id": 1,
+            "studentId": 1,
+            "courseId": 1,
+            "grade": "A",
+            "semester": "Fall",
+            "year": 2024,
+            "status": "completed",
+            "enrolledDate": "2024-08-15"
+        },
+        {
+            "id": 2,
+            "studentId": 1,
+            "courseId": 2,
+            "grade": "A-",
+            "semester": "Fall",
+            "year": 2024,
+            "status": "completed",
+            "enrolledDate": "2024-08-15"
+        },
+        {
+            "id": 3,
+            "studentId": 2,
+            "courseId": 1,
+            "grade": "B+",
+            "semester": "Fall",
+            "year": 2024,
+            "status": "completed",
+            "enrolledDate": "2024-08-15"
+        },
+        {
+            "id": 4,
+            "studentId": 2,
+            "courseId": 3,
+            "grade": "A",
+            "semester": "Spring",
+            "year": 2025,
+            "status": "enrolled",
+            "enrolledDate": "2025-01-10"
+        },
+        {
+            "id": 5,
+            "studentId": 3,
+            "courseId": 2,
+            "grade": "B",
+            "semester": "Fall",
+            "year": 2024,
+            "status": "completed",
+            "enrolledDate": "2024-08-15"
+        },
+        {
+            "id": 6,
+            "studentId": 3,
+            "courseId": 4,
+            "semester": "Spring",
+            "year": 2025,
+            "status": "enrolled",
+            "enrolledDate": "2025-01-10"
+        },
+        {
+            "id": 7,
+            "studentId": 4,
+            "courseId": 1,
+            "grade": "A",
+            "semester": "Fall",
+            "year": 2024,
+            "status": "completed",
+            "enrolledDate": "2024-08-15"
+        },
+        {
+            "id": 8,
+            "studentId": 4,
+            "courseId": 5,
+            "semester": "Spring",
+            "year": 2025,
+            "status": "enrolled",
+            "enrolledDate": "2025-01-10"
+        },
+        {
+            "id": 9,
+            "studentId": 5,
+            "courseId": 3,
+            "grade": "B+",
+            "semester": "Fall",
+            "year": 2024,
+            "status": "completed",
+            "enrolledDate": "2024-08-15"
+        },
+        {
+            "id": 10,
+            "studentId": 5,
+            "courseId": 6,
+            "grade": "A-",
+            "semester": "Fall",
+            "year": 2024,
+            "status": "completed",
+            "enrolledDate": "2024-08-15"
+        }
     ]
 }
