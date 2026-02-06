@@ -44,7 +44,8 @@ function updateCourse(
         return res.status(404).json({ message: "Course not found" });
     }
 
-    const parsed = courseSchema.safeParse(body);
+    const existingCourse = db.courses[index];
+    const parsed = courseSchema.partial().safeParse(body);
 
     if (!parsed.success) {
         return res.status(400).json({
@@ -54,8 +55,9 @@ function updateCourse(
     }
 
     const updatedCourse = {
-        id,
-        ...parsed.data
+        ...existingCourse,
+        ...parsed.data,
+        id // Ensure ID remains unchanged
     };
 
     db.courses[index] = updatedCourse;

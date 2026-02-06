@@ -32,7 +32,7 @@ export default function StudentFilters({ onFilterChange, departments }: Props) {
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-700 focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 outline-none transition-all"
                     >
                         <option value="">All Academic Years</option>
-                        {[2021, 2022, 2023, 2024, 2025].map(y => (
+                        {[2021, 2022, 2023, 2024, 2025, 2026].map(y => (
                             <option key={y} value={y}>{y}</option>
                         ))}
                     </select>

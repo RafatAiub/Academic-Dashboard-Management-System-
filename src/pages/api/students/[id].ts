@@ -44,7 +44,8 @@ function updateStudent(
         return res.status(404).json({ message: "Student not found" });
     }
 
-    const parsed = studentSchema.safeParse(body);
+    const existingStudent = db.students[index];
+    const parsed = studentSchema.partial().safeParse(body);
 
     if (!parsed.success) {
         return res.status(400).json({
@@ -54,8 +55,9 @@ function updateStudent(
     }
 
     const updatedStudent = {
-        id,
-        ...parsed.data
+        ...existingStudent,
+        ...parsed.data,
+        id // Ensure ID remains unchanged
     };
 
     db.students[index] = updatedStudent;

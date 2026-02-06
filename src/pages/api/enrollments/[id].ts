@@ -58,7 +58,8 @@ function updateEnrollment(
         return res.status(404).json({ message: "Enrollment not found" });
     }
 
-    const parsed = enrollmentSchema.safeParse(body);
+    const existingEnrollment = db.enrollments[index];
+    const parsed = enrollmentSchema.partial().safeParse(body);
 
     if (!parsed.success) {
         return res.status(400).json({
@@ -68,14 +69,9 @@ function updateEnrollment(
     }
 
     const updatedEnrollment: Enrollment = {
-        id,
-        studentId: parsed.data.studentId,
-        courseId: parsed.data.courseId,
-        semester: parsed.data.semester,
-        year: parsed.data.year,
-        status: parsed.data.status,
-        enrolledDate: parsed.data.enrolledDate,
-        ...(parsed.data.grade && { grade: parsed.data.grade })
+        ...existingEnrollment,
+        ...parsed.data,
+        id // Ensure ID remains unchanged
     };
 
     db.enrollments[index] = updatedEnrollment;

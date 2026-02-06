@@ -45,7 +45,8 @@ function updateFaculty(
         return res.status(404).json({ message: "Faculty not found" });
     }
 
-    const parsed = facultySchema.safeParse(body);
+    const existingFaculty = db.faculty[index];
+    const parsed = facultySchema.partial().safeParse(body);
 
     if (!parsed.success) {
         return res.status(400).json({
@@ -55,12 +56,9 @@ function updateFaculty(
     }
 
     const updatedFaculty: Faculty = {
-        id,
-        name: parsed.data.name,
-        email: parsed.data.email,
-        department: parsed.data.department,
-        specialization: parsed.data.specialization,
-        ...(parsed.data.phone && { phone: parsed.data.phone })
+        ...existingFaculty,
+        ...parsed.data,
+        id // Ensure ID remains unchanged
     };
 
     db.faculty[index] = updatedFaculty;
