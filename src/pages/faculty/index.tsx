@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { toast } from "react-hot-toast";
 import FacultyTable from "@/components/tables/FacultyTable";
 import FacultyForm from "@/components/forms/FacultyForm";
 import FacultyFilters from "@/components/filters/FacultyFilters";
@@ -57,10 +58,16 @@ export default function FacultyPage() {
     }
 
     async function handleCreateFaculty(data: FacultyFormData) {
-        await FacultyService.create(data);
-        setPage(1);
-        fetchFaculty();
-        fetchAllFaculty();
+        try {
+            await FacultyService.create(data);
+            toast.success("Faculty member added successfully!");
+            setPage(1);
+            fetchFaculty();
+            fetchAllFaculty();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to add faculty member.");
+        }
     }
 
     function handleExportCSV() {

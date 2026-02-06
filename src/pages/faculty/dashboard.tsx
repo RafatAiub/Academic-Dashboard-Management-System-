@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { Faculty } from "@/types/faculty";
 import { Course } from "@/types/course";
 import { EnrollmentWithDetails } from "@/types/enrollment";
@@ -74,10 +75,12 @@ export default function FacultyDashboard() {
     async function handleGradeUpdate(enrollmentId: number, grade: string) {
         try {
             await EnrollmentService.update(enrollmentId, { grade, status: 'completed' });
+            toast.success("Grade updated successfully!");
             fetchCourseEnrollments();
             setUpdatingGrade(null);
         } catch (error) {
-            alert("Failed to update grade");
+            console.error(error);
+            toast.error("Failed to update grade");
         }
     }
 

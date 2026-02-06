@@ -8,6 +8,7 @@ import { StudentFormData } from "@/lib/validators";
 import { exportStudentsToCSV } from "@/lib/csv-utils";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/Card";
 import { Search, FileDown, Plus, Users } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 export default function StudentsPage() {
     const [students, setStudents] = useState<Student[]>([]);
@@ -57,10 +58,16 @@ export default function StudentsPage() {
     }
 
     async function handleCreateStudent(data: StudentFormData) {
-        await StudentService.create(data);
-        setPage(1);
-        fetchStudents();
-        fetchAllStudents();
+        try {
+            await StudentService.create(data);
+            toast.success("Student created successfully!");
+            setPage(1);
+            fetchStudents();
+            fetchAllStudents();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to create student. Please try again.");
+        }
     }
 
     function handleExportCSV() {

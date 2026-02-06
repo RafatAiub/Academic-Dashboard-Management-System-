@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { toast } from "react-hot-toast";
 import CourseTable from "@/components/tables/CourseTable";
 import CourseForm from "@/components/forms/CourseForm";
 import CourseFilters from "@/components/filters/CourseFilters";
@@ -57,10 +58,16 @@ export default function CoursesPage() {
     }
 
     async function handleCreateCourse(data: CourseFormData) {
-        await CourseService.create(data);
-        setPage(1);
-        fetchCourses();
-        fetchAllCourses();
+        try {
+            await CourseService.create(data);
+            toast.success("Course added successfully!");
+            setPage(1);
+            fetchCourses();
+            fetchAllCourses();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to add course.");
+        }
     }
 
     function handleExportCSV() {

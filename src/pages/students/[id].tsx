@@ -1,4 +1,5 @@
 import { getDB } from "@/lib/mock-db";
+import { toast } from "react-hot-toast";
 import { GetServerSideProps } from "next";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -68,19 +69,26 @@ export default function StudentDetailPage({ student, error }: Props) {
     }
 
     const handleUpdate = async (data: StudentFormData) => {
-        await StudentService.update(student.id, data);
-        setIsEditing(false);
-        router.replace(router.asPath);
+        try {
+            await StudentService.update(student.id, data);
+            toast.success("Student profile updated successfully!");
+            setIsEditing(false);
+            router.replace(router.asPath);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update student profile.");
+        }
     };
 
     const handleDelete = async () => {
         setIsDeleting(true);
         try {
             await StudentService.delete(student.id);
+            toast.success("Student deleted successfully!");
             router.push("/students");
         } catch (error) {
             setIsDeleting(false);
-            alert("Failed to delete student");
+            toast.error("Failed to delete student");
         }
     };
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import EnrollmentTable from "@/components/tables/EnrollmentTable";
 import EnrollmentForm from "@/components/forms/EnrollmentForm";
 import { EnrollmentWithDetails } from "@/types/enrollment";
@@ -52,15 +53,27 @@ export default function EnrollmentsPage() {
     }
 
     async function handleCreateEnrollment(data: EnrollmentFormData) {
-        await EnrollmentService.create(data);
-        setPage(1);
-        fetchEnrollments();
+        try {
+            await EnrollmentService.create(data);
+            toast.success("Student enrolled successfully!");
+            setPage(1);
+            fetchEnrollments();
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to enroll student.");
+        }
     }
 
     async function handleDelete(id: number) {
         if (confirm("Are you sure you want to delete this enrollment?")) {
-            await EnrollmentService.delete(id);
-            fetchEnrollments();
+            try {
+                await EnrollmentService.delete(id);
+                toast.success("Enrollment record deleted.");
+                fetchEnrollments();
+            } catch (error) {
+                console.error(error);
+                toast.error("Failed to delete enrollment.");
+            }
         }
     }
 

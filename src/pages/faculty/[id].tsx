@@ -1,4 +1,5 @@
 import { getDB } from "@/lib/mock-db";
+import { toast } from "react-hot-toast";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -46,19 +47,26 @@ export default function FacultyDetailPage({ faculty, error }: Props) {
     }
 
     const handleUpdate = async (data: FacultyFormData) => {
-        await FacultyService.update(faculty.id, data);
-        setIsEditing(false);
-        router.replace(router.asPath);
+        try {
+            await FacultyService.update(faculty.id, data);
+            toast.success("Faculty profile updated!");
+            setIsEditing(false);
+            router.replace(router.asPath);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update profile.");
+        }
     };
 
     const handleDelete = async () => {
         setIsDeleting(true);
         try {
             await FacultyService.delete(faculty.id);
+            toast.success("Faculty member deleted.");
             router.push("/faculty");
         } catch (error) {
             setIsDeleting(false);
-            alert("Failed to delete faculty member");
+            toast.error("Failed to delete faculty member");
         }
     };
 
@@ -275,5 +283,3 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
         props: { faculty }
     };
 };
-
-

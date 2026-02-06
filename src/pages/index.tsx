@@ -65,19 +65,6 @@ export default function DashboardPage() {
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">Dashboard Overview</h1>
           <p className="text-slate-500 font-medium mt-1">Manage your academic institution with precision</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/enrollments"
-            className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl hover:bg-slate-50 transition-all font-bold text-sm shadow-sm flex items-center gap-2"
-          >
-            <BarChart3 className="w-4 h-4" />
-            Enrollments
-          </Link>
-          <button className="bg-emerald-600 text-white px-4 py-2.5 rounded-xl hover:bg-emerald-700 transition-all font-bold text-sm shadow-sm flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            Quick Add
-          </button>
-        </div>
       </div>
 
       {/* Stats Grid */}
