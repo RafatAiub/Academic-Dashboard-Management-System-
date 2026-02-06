@@ -63,14 +63,18 @@ export default function TopStudentsLeaderboard({ students }: Props) {
         ],
         dataLabels: {
             enabled: true,
-            offsetX: 30,
+            offsetX: -25, // Move text INSIDE the bar end
             style: {
                 fontSize: '14px',
                 fontWeight: 'bold',
                 colors: ['#fff']
             },
             formatter: function (val: any) {
-                return Number(val).toFixed(2);
+                // Force strict 2 decimal places (e.g. 4.00)
+                return Number(val).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
             }
         },
         xaxis: {
