@@ -4,6 +4,7 @@ import CourseForm from "@/components/forms/CourseForm";
 import { Course } from "@/types/course";
 import { CourseService } from "@/services/course.service";
 import { CourseFormData } from "@/lib/validators";
+import { exportCoursesToCSV } from "@/lib/csv-utils";
 
 export default function CoursesPage() {
     const [courses, setCourses] = useState<Course[]>([]);
@@ -11,11 +12,13 @@ export default function CoursesPage() {
     const [total, setTotal] = useState(0);
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
+    const [allCourses, setAllCourses] = useState<Course[]>([]);
 
     const limit = 5;
 
     useEffect(() => {
         fetchCourses();
+        fetchAllCourses();
     }, [page, search]);
 
     async function fetchCourses() {
@@ -35,10 +38,28 @@ export default function CoursesPage() {
         }
     }
 
+    async function fetchAllCourses() {
+        try {
+            const res = await CourseService.list({
+                page: 1,
+                limit: 1000,
+                search
+            });
+            setAllCourses(res.data);
+        } catch (error) {
+            console.error("Failed to fetch all courses:", error);
+        }
+    }
+
     async function handleCreateCourse(data: CourseFormData) {
         await CourseService.create(data);
         setPage(1);
         fetchCourses();
+        fetchAllCourses();
+    }
+
+    function handleExportCSV() {
+        exportCoursesToCSV(allCourses);
     }
 
     const totalPages = Math.ceil(total / limit);
@@ -53,18 +74,27 @@ export default function CoursesPage() {
             {/* Course Form */}
             <CourseForm onSubmit={handleCreateCourse} />
 
-            {/* Search */}
-            <div className="mb-4 mt-8">
+            {/* Search and Export */}
+            <div className="mb-4 mt-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                 <input
                     type="text"
                     placeholder="Search by code or name..."
-                    className="border border-gray-300 rounded-lg p-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="border border-gray-300 rounded-lg p-2 w-full sm:max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={search}
                     onChange={(e) => {
                         setPage(1);
                         setSearch(e.target.value);
                     }}
                 />
+                <button
+                    onClick={handleExportCSV}
+                    className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-2 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 font-medium whitespace-nowrap"
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export to CSV
+                </button>
             </div>
 
             {/* Loading State */}
