@@ -46,17 +46,12 @@ function listEnrollments(
     const paginatedData = filtered.slice(start, end);
 
     // Populate student and course names
-    const enriched: EnrollmentWithDetails[] = paginatedData.map(enrollment => {
-        const student = db.students.find(s => s.id === enrollment.studentId);
-        const course = db.courses.find(c => c.id === enrollment.courseId);
-
-        return {
-            ...enrollment,
-            studentName: student?.name,
-            courseName: course?.name,
-            courseCode: course?.code
-        };
-    });
+    const enriched: EnrollmentWithDetails[] = paginatedData.map(enrollment => ({
+        ...enrollment,
+        studentName: db.students.find(s => s.id === enrollment.studentId)?.name,
+        courseName: db.courses.find(c => c.id === enrollment.courseId)?.name,
+        courseCode: db.courses.find(c => c.id === enrollment.courseId)?.code
+    }));
 
     return res.status(200).json({
         data: enriched,

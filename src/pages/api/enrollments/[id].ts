@@ -35,14 +35,11 @@ function getEnrollment(
     }
 
     // Enrich with student and course data
-    const student = db.students.find(s => s.id === enrollment.studentId);
-    const course = db.courses.find(c => c.id === enrollment.courseId);
-
     const enriched: EnrollmentWithDetails = {
         ...enrollment,
-        studentName: student?.name,
-        courseName: course?.name,
-        courseCode: course?.code
+        studentName: db.students.find(s => s.id === enrollment.studentId)?.name,
+        courseName: db.courses.find(c => c.id === enrollment.courseId)?.name,
+        courseCode: db.courses.find(c => c.id === enrollment.courseId)?.code
     };
 
     return res.status(200).json(enriched);
