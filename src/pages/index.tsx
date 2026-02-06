@@ -3,6 +3,10 @@ import Link from "next/link";
 import { StudentService } from "@/services/student.service";
 import { CourseService } from "@/services/course.service";
 import { FacultyService } from "@/services/faculty.service";
+import { Student } from "@/types/student";
+import { Course } from "@/types/course";
+import TopStudentsLeaderboard from "@/components/dashboard/TopStudentsLeaderboard";
+import CourseEnrollmentChart from "@/components/dashboard/CourseEnrollmentChart";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -12,6 +16,9 @@ export default function DashboardPage() {
     averageGPA: 0,
     loading: true
   });
+
+  const [students, setStudents] = useState<Student[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     fetchStats();
@@ -25,11 +32,14 @@ export default function DashboardPage() {
         FacultyService.list({ page: 1, limit: 1000 })
       ]);
 
-      const students = studentsRes.data;
-      const avgGPA = students.length > 0
-        ? students.reduce((sum, s) => sum + s.gpa, 0) / students.length
+      const studentsData = studentsRes.data;
+      const coursesData = coursesRes.data;
+      const avgGPA = studentsData.length > 0
+        ? studentsData.reduce((sum, s) => sum + s.gpa, 0) / studentsData.length
         : 0;
 
+      setStudents(studentsData);
+      setCourses(coursesData);
       setStats({
         totalStudents: studentsRes.meta.total,
         totalCourses: coursesRes.meta.total,
@@ -181,6 +191,29 @@ export default function DashboardPage() {
               <p className="text-sm text-gray-600">Add, edit, or view faculty</p>
             </div>
           </Link>
+        </div>
+      </div>
+
+      {/* Analytics & Charts Section */}
+      <div className="mt-8">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            Analytics Dashboard
+          </h2>
+          <p className="text-gray-600 mt-1">Performance insights and enrollment trends</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Top Students Leaderboard */}
+          <TopStudentsLeaderboard students={students} />
+
+          {/* Course Enrollment Chart */}
+          <CourseEnrollmentChart courses={courses} />
         </div>
       </div>
 
