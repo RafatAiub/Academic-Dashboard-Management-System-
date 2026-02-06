@@ -2,7 +2,7 @@
 
 A state-of-the-art, high-performance Academic Management System (AMS) built for administrative excellence. This platform features a harmonized **Premium Emerald** design system, robust architectural patterns, and full-spectrum management for Students, Courses, Faculty, and Enrollments.
 
-🚀 **[Live Demonstration](https://academic-dashboard-management-syste.vercel.app/)**
+🚀 **[Live Demonstration](https://academic-dashboard-0up4.onrender.com/)**
 
 ---
 
