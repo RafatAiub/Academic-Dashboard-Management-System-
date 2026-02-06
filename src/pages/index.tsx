@@ -142,7 +142,8 @@ export default function DashboardPage() {
                 {[
                   { name: "Manage Students", href: "/students", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
                   { name: "Manage Courses", href: "/courses", icon: BookOpen, color: "text-amber-600", bg: "bg-amber-50" },
-                  { name: "Faculty Portal", href: "/faculty/dashboard", icon: GraduationCap, color: "text-indigo-600", bg: "bg-indigo-50" },
+                  { name: "Manage Faculty", href: "/faculty", icon: GraduationCap, color: "text-purple-600", bg: "bg-purple-50" },
+                  { name: "Faculty Portal", href: "/faculty/dashboard", icon: BarChart3, color: "text-indigo-600", bg: "bg-indigo-50" },
                 ].map((action) => (
                   <Link
                     key={action.name}

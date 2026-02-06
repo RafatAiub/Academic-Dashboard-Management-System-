@@ -45,6 +45,14 @@ The dashboard employs a custom-crafted design system focused on visual hierarchy
 - **Optimized SSR**: Direct database access in `getServerSideProps` to bypass network latency and ensure instant page loads for detail views.
 - **Partial Update API Support**: RESTful endpoints redesigned to support partial payloads (`PATCH`-style updates via `PUT`), utilizing `.partial()` Zod schemas for flexible data merging.
 
+### **Architecture Decisions**
+
+**Why Custom REST API (Option 4)?**
+Instead of using a simple `JSON Server`, this project implements a **Custom REST API using Next.js API Routes**. This architectural choice was made to:
+1.  **Enforce Strict Type Safety**: Utilizing TypeScript and Zod to validate every request payload, ensuring data integrity that "dummy" APIs cannot match.
+2.  **Implement Complex Business Logic**: The custom backend allows for relationship validation (e.g., ensuring a student exists before enrolling them in a course) which is impossible with static JSON placeholder APIs.
+3.  **Simulation of Real Production**: The service layer pattern mimics a real microservice architecture, making the codebase scalable and ready for a database migration (e.g., to PostgreSQL) with minimal refactoring.
+
 ## 📂 Project Blueprint
 
 ```bash
